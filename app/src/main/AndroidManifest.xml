@@ -15,11 +15,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".AccessibilityThing">
+        <service android:name=".AccessibilityThing"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
         </service>
     </application>
-
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"></uses-permission>
 </manifest>

@@ -2,8 +2,10 @@ package me.mikemodder.osxbuildtest
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.pm.PackageManager
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import android.widget.Toast
 
 
 /**
@@ -15,12 +17,17 @@ class AccessibilityThing : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if(event == null) { Log.d(TAG, "null event"); return }
         val eventType = event?.eventType
-        Log.d(TAG, "Got am event?")
         when(eventType){
             AccessibilityEvent.TYPE_VIEW_FOCUSED -> {
                 Log.d(TAG, "Got VIEW_FOCUSED event! Text " + event.text)
+                var appname = packageManager.getApplicationLabel(packageManager.getApplicationInfo(event.packageName.toString(), PackageManager.GET_META_DATA))
+                Toast.makeText(super.getApplicationContext(), "VIEW_FOCUSED: "+event.packageName + ", App name: " + appname, Toast.LENGTH_LONG).show()
             }
-            null -> { Log.d(TAG, "Got null") }
+            AccessibilityEvent.TYPE_VIEW_CLICKED -> {
+                Log.d(TAG, "Got VIEW_CLICKED from " + event.packageName)
+                var appname = packageManager.getApplicationLabel(packageManager.getApplicationInfo(event.packageName.toString(), PackageManager.GET_META_DATA))
+                Toast.makeText(super.getApplicationContext(), "VIEW_CLICKED: "+event.packageName + ", App name: " + appname, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
